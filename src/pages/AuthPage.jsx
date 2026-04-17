@@ -1,14 +1,28 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Tabs } from "antd";
+import { Form, Input, Button, Tabs, message } from "antd";
 import { motion } from "framer-motion";
+import { login } from "../api/endpoints/auth";
+import { enums } from "../constants";
+import { useNavigate } from "react-router";
 
 const { TabPane } = Tabs;
 
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const onLogin = (values) => {
-    console.log("Login:", values);
+    console.log("form.getFieldsValue() ===>", form.getFieldsValue());
+
+    login(form.getFieldsValue())
+      .then((res) => {
+        localStorage.setItem(enums.TOKEN, res.data.token);
+        navigate("/");
+      })
+      .catch((e) => {
+        message.error("Не удалось войти в аккаунт");
+      });
   };
 
   const onRegister = (values) => {
@@ -45,7 +59,7 @@ export default function AuthPage() {
         >
           <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
             <TabPane tab="Вход" key="login">
-              <Form layout="vertical" onFinish={onLogin}>
+              <Form layout="vertical" onFinish={onLogin} form={form}>
                 <Form.Item
                   label={<span className="text-gray-300">Email</span>}
                   name="email"

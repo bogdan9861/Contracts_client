@@ -15,11 +15,7 @@ const SideMenu = ({ defaultSelectedKeys }) => {
   const navigate = useNavigate();
 
   return (
-    <Sider
-      width={240}
-      className="bg-neutral-900 border-r border-white/10"
-      breakpoint="lg"
-    >
+    <Sider width={240} className=" border-r border-white/10" breakpoint="lg">
       <div className="h-20 flex items-center justify-center text-white text-xl font-semibold border-b border-white/10">
         CRM System
       </div>
@@ -28,7 +24,7 @@ const SideMenu = ({ defaultSelectedKeys }) => {
         mode="inline"
         defaultSelectedKeys={[defaultSelectedKeys || "1"]}
         theme="dark"
-        className="bg-neutral-900 border-none mt-4"
+        className=" border-none mt-4"
         items={[
           {
             key: "1",
