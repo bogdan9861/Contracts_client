@@ -7,7 +7,7 @@ import { UploadOutlined } from "@ant-design/icons";
 
 const ContractStatuses = {
   ACTIVE: "Активный",
-  EXPIRED: "Новый",
+  EXPIRED: "Просрочен",
   CLOSED: "Закрыт",
 };
 

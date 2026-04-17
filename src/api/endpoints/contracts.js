@@ -6,19 +6,8 @@ export const createContract = async (data) => {
   });
 };
 
-export const editContract = async ({
-  number,
-  date,
-  sum,
-  contractId,
-  clientId,
-}) => {
-  return await api.put(`/contracts/${contractId}`, {
-    number,
-    date,
-    sum,
-    clientId,
-  });
+export const editContract = async (data) => {
+  return await api.put(`/contracts/${data?.contractId}`, data);
 };
 
 export const getContracts = async () => {

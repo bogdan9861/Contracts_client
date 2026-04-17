@@ -50,7 +50,7 @@ const Contracts = () => {
       key: "status",
       render: (status) => {
         const color =
-          status === "ACTIVE" ? "green" : status === "NEW" ? "blue" : "red";
+          status === "ACTIVE" ? "green" : status === "EXPIRED" ? "yellow" : "red";
 
         return <Tag color={color}>{status}</Tag>;
       },
