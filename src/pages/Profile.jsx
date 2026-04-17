@@ -14,11 +14,14 @@ import {
   MailOutlined,
   PhoneOutlined,
   EditOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 import SideMenu from "../components/SideMenu";
 import { getCurrent } from "../api/endpoints/auth";
 import { getAuditLogs } from "../api/endpoints/auditLogs";
 import EditProfileModal from "../components/ui/EditProfileModal";
+import { useNavigate } from "react-router";
+import { enums } from "../constants";
 
 const AUDIT_TYPES = {
   CONTRACT_CREATED: "Новый договор",
@@ -39,7 +42,7 @@ const Profile = () => {
   });
   const [logs, setLogs] = useState([]);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
-  console.log(editProfileModalOpen);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCurrent()
@@ -62,6 +65,11 @@ const Profile = () => {
       });
   }, []);
 
+  const logout = () => {
+    navigate("/auth", { replace: true });
+    localStorage.removeItem(enums.TOKEN);
+  };
+
   return (
     <>
       <div className="flex" style={{ width: "100%", minHeight: "100vh" }}>
@@ -72,13 +80,27 @@ const Profile = () => {
         >
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="mb-10">
-              <h1 className="text-4xl font-bold tracking-tight">
-                Профиль пользователя
-              </h1>
-              <p className="text-neutral-400 mt-2">
-                Информация о пользователе системы
-              </p>
+            <div>
+              <div
+                className="flex"
+                style={{
+                  width: "100%",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div className="mb-10">
+                  <h1 className="text-4xl font-bold tracking-tight">
+                    Профиль пользователя
+                  </h1>
+                  <p className="text-neutral-400 mt-2">
+                    Информация о пользователе системы
+                  </p>
+                </div>
+                <button onClick={logout}>
+                  <LoginOutlined style={{ fontSize: 25, color: "red" }} />
+                </button>
+              </div>
             </div>
 
             {/* Profile card */}
