@@ -14,19 +14,8 @@ export const createClient = async ({
   });
 };
 
-export const editClient = async ({
-  comapnyName,
-  contactPerson,
-  email,
-  phone,
-  clientID,
-}) => {
-  return await api.put(`/clients/${clientID}`, {
-    comapnyName,
-    contactPerson,
-    email,
-    phone,
-  });
+export const editClient = async (data) => {
+  return await api.put(`/clients/${data?.clientID}`, data);
 };
 
 export const getClients = async (search) => {
