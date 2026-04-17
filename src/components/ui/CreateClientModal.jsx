@@ -75,7 +75,7 @@ const CreateClient = ({ data, setData, open, onClose, setClients }) => {
     >
       <Form form={form} initialValues={client.current}>
         <span className="mb-2 block">Название компании</span>
-        <Form.Item name="comapnyName">
+        <Form.Item name="companyName">
           <Input placeholder="ООО Альфа" />
         </Form.Item>
 
