@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Tabs, message } from "antd";
 import { motion } from "framer-motion";
-import { login } from "../api/endpoints/auth";
+import { login, register } from "../api/endpoints/auth";
 import { enums } from "../constants";
 import { useNavigate } from "react-router";
 
@@ -10,10 +10,11 @@ const { TabPane } = Tabs;
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onLogin = (values) => {
-    console.log("form.getFieldsValue() ===>", form.getFieldsValue());
+    setLoading(true);
 
     login(form.getFieldsValue())
       .then((res) => {
@@ -22,11 +23,26 @@ export default function AuthPage() {
       })
       .catch((e) => {
         message.error("Не удалось войти в аккаунт");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   const onRegister = (values) => {
-    console.log("Register:", values);
+    setLoading(true);
+
+    register(values)
+      .then((res) => {
+        localStorage.setItem(enums.TOKEN, res.data.token);
+        navigate("/");
+      })
+      .catch((e) => {
+        message.error("Не удалось войти в аккаунт");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -76,7 +92,13 @@ export default function AuthPage() {
                   <Input.Password size="large" placeholder="Введите пароль" />
                 </Form.Item>
 
-                <Button type="primary" htmlType="submit" block size="large">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  size="large"
+                  loading={loading}
+                >
                   Войти
                 </Button>
               </Form>
@@ -88,7 +110,7 @@ export default function AuthPage() {
                   label={
                     <span className="text-gray-300">Название компании</span>
                   }
-                  name="company_name"
+                  name="companyName"
                   rules={[
                     { required: true, message: "Введите название компании" },
                   ]}
@@ -98,7 +120,7 @@ export default function AuthPage() {
 
                 <Form.Item
                   label={<span className="text-gray-300">Имя</span>}
-                  name="name"
+                  name="fullName"
                   rules={[{ required: true, message: "Введите имя" }]}
                 >
                   <Input size="large" placeholder="Ваше имя" />
@@ -120,7 +142,13 @@ export default function AuthPage() {
                   <Input.Password size="large" placeholder="Введите пароль" />
                 </Form.Item>
 
-                <Button type="primary" htmlType="submit" block size="large">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  size="large"
+                  loading={loading}
+                >
                   Зарегистрироваться
                 </Button>
               </Form>

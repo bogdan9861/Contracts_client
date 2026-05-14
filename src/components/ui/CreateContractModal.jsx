@@ -41,12 +41,28 @@ const CreateContractModal = ({ data, open, onClose, setContracts }) => {
       setLoading(true);
 
       if (data) {
-        const contract = await editContract({
-          ...values,
-          contractId: data.id,
+        const formData = new FormData();
+
+        Object.keys(values).forEach((key) => {
+          if (key === "file" || key === "date") return;
+          formData.append(key, values[key]);
         });
 
-        setContracts((prev) => [contract.data, ...prev]);
+        if (values.date) {
+          formData.append("date", values.date.toISOString());
+        }
+
+        const file = values.file[0].originFileObj;
+        if (file) {
+          formData.append("file", file);
+        }
+
+        const contract = await editContract(data.id, formData);
+
+        setContracts((prev) => [
+          contract.data,
+          ...prev.filter((c) => c.id !== contract.data?.id),
+        ]);
 
         message.success("Контракт обновлен");
       } else {
@@ -61,7 +77,7 @@ const CreateContractModal = ({ data, open, onClose, setContracts }) => {
           formData.append("date", values.date.toISOString());
         }
 
-        const file = values.file?.file?.originFileObj;
+        const file = values.file[0].originFileObj;
         if (file) {
           formData.append("file", file);
         }
@@ -75,7 +91,7 @@ const CreateContractModal = ({ data, open, onClose, setContracts }) => {
       onClose();
       form.resetFields();
     } catch (e) {
-      message.error("Проверь поля формы");
+      message.error("Проверьте поля формы");
     } finally {
       setLoading(false);
     }

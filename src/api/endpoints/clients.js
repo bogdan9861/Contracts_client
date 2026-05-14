@@ -1,17 +1,7 @@
 import { api } from "..";
 
-export const createClient = async ({
-  comapnyName,
-  contactPerson,
-  email,
-  phone,
-}) => {
-  return await api.post("/clients/", {
-    comapnyName,
-    contactPerson,
-    email,
-    phone,
-  });
+export const createClient = async (data) => {
+  return await api.post("/clients/", data);
 };
 
 export const editClient = async (data) => {
