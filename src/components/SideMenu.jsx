@@ -57,6 +57,27 @@ const SideMenu = ({ defaultSelectedKeys }) => {
     if (!role) return;
 
     const isOwner = role === "COMPANY_OWNER";
+    const isAdmin = role === "ADMIN";
+
+    if (isAdmin) {
+      setMenu([
+        ...defaultMenu,
+        {
+          key: "3",
+          icon: <TeamOutlined />,
+          label: "Клиенты",
+          onClick: () => navigate("/clients"),
+        },
+        {
+          key: "5",
+          icon: <TeamOutlined />,
+          label: "Компании",
+          onClick: () => navigate("/companies"),
+        },
+      ]);
+
+      return;
+    }
 
     if (isOwner) {
       setMenu([

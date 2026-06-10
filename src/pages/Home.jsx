@@ -43,6 +43,7 @@ import { useEffect, useState } from "react";
 import { getDashboard } from "../api/endpoints/dashboard";
 import { enums } from "../constants";
 import { Link, useNavigate } from "react-router";
+import { getCurrent } from "../api/endpoints/auth";
 
 const { Content } = Layout;
 
@@ -53,6 +54,12 @@ const COLORS = [
   "rgba(245, 158, 11, 0.8)", // pending - оранжевый (для клиента)
   "rgba(220, 38, 38, 0.8)", // rejected - темно-красный (для клиента)
 ];
+
+const roles = {
+  ADMIN: "Администратор",
+  COMPANY_OWNER: "Владелец компании",
+  CLIENT: "Клиент",
+};
 
 const Home = () => {
   const [dashboardData, setDashboardData] = useState({
@@ -67,6 +74,17 @@ const Home = () => {
   const [authorized, setAuthorized] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    getCurrent()
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem(enums.TOKEN);
@@ -177,7 +195,7 @@ const Home = () => {
               </p>
               {dashboardData.role && (
                 <Tag color={isOwner ? "blue" : "green"} className="mt-2">
-                  {isOwner ? "Владелец компании" : "Клиент"}
+                  {roles[user?.role]}
                 </Tag>
               )}
             </div>

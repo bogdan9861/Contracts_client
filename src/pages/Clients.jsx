@@ -48,7 +48,7 @@ const Clients = () => {
   useEffect(() => {
     getCurrent()
       .then((res) => {
-        if (res.data.role !== "COMPANY_OWNER") {
+        if (res.data.role !== "COMPANY_OWNER" && res.data.role !== "ADMIN") {
           navigate("/");
           message.info("У вас нет доступа к этому разделу");
         }
@@ -81,7 +81,6 @@ const Clients = () => {
       setClients(res.data);
       setFilteredClients(res.data);
     } catch (error) {
-      message.error("Не удалось получить список клиентов");
       console.error(error);
     } finally {
       setLoading(false);

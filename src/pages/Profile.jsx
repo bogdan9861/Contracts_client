@@ -62,7 +62,7 @@ const Profile = () => {
   const [logs, setLogs] = useState([]);
   const [contracts, setContracts] = useState([]);
   const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
   const navigate = useNavigate();
   const [theme, setTheme] = useState("dark");
@@ -336,7 +336,10 @@ const Profile = () => {
             </div>
 
             {/* Profile card */}
-            <Card className="bg-neutral-900 border border-white/10 mb-8">
+            <Card
+              className="bg-neutral-900 border border-white/10 mb-8"
+              loading={loading}
+            >
               <div className="flex items-center gap-6 flex-wrap">
                 <Avatar size={90} icon={<UserOutlined />} />
 
@@ -375,6 +378,7 @@ const Profile = () => {
                   title={<span className="text-white">Личная информация</span>}
                   className="bg-neutral-900 border border-white/10"
                   style={{ height: "100%" }}
+                  loading={loading}
                 >
                   <Descriptions column={1} labelStyle={{ color: "#9ca3af" }}>
                     <Descriptions.Item label="Полное имя">
@@ -418,7 +422,10 @@ const Profile = () => {
                   size="middle"
                   style={{ width: "100%" }}
                 >
-                  <Card className="bg-neutral-900 border border-white/10">
+                  <Card
+                    className="bg-neutral-900 border border-white/10"
+                    loading={loading}
+                  >
                     <Statistic
                       title={
                         <span className="text-neutral-400">
@@ -432,7 +439,10 @@ const Profile = () => {
                   </Card>
 
                   {isOwner && (
-                    <Card className="bg-neutral-900 border border-white/10">
+                    <Card
+                      className="bg-neutral-900 border border-white/10"
+                      loading={loading}
+                    >
                       <Statistic
                         title={
                           <span className="text-neutral-400">
@@ -447,7 +457,10 @@ const Profile = () => {
                   )}
 
                   {isClient && (
-                    <Card className="bg-neutral-900 border border-white/10">
+                    <Card
+                      className="bg-neutral-900 border border-white/10"
+                      loading={loading}
+                    >
                       <Statistic
                         title={
                           <span className="text-neutral-400">
@@ -465,7 +478,10 @@ const Profile = () => {
                   )}
 
                   {contractStats.total > 0 && (
-                    <Card className="bg-neutral-900 border border-white/10">
+                    <Card
+                      className="bg-neutral-900 border border-white/10"
+                      loading={loading}
+                    >
                       <Statistic
                         title={
                           <span className="text-neutral-400">
@@ -485,6 +501,7 @@ const Profile = () => {
 
             {/* Tabs for Contracts and Clients */}
             <Card
+              loading={loading}
               className="bg-neutral-900 border border-white/10"
               style={{ marginBottom: 20 }}
             >
@@ -541,6 +558,7 @@ const Profile = () => {
 
             {/* Activity log */}
             <Card
+              loading={loading}
               title={<span className="text-white">История активности</span>}
               className="bg-neutral-900 border border-white/10 mt-8"
               style={{ marginBottom: 20 }}
@@ -562,6 +580,7 @@ const Profile = () => {
                 >
                   {logs?.map((log) => (
                     <Card
+                      loading={loading}
                       key={log.id}
                       size="small"
                       className="bg-neutral-800 border border-white/10"
@@ -586,6 +605,7 @@ const Profile = () => {
             </Card>
 
             <Card
+              loading={loading}
               title={<span className="text-white">Оформление</span>}
               className="bg-neutral-900 border border-white/10 mt-8"
               style={{ marginBottom: 20 }}
