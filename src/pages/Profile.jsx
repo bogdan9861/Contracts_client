@@ -36,7 +36,7 @@ import { getAuditLogs } from "../api/endpoints/auditLogs";
 import { getMyContracts, getCompanyClients } from "../api/endpoints/contracts";
 import EditProfileModal from "../components/ui/EditProfileModal";
 import { useNavigate } from "react-router";
-import { enums } from "../constants";
+import { enums, roles } from "../constants";
 
 const AUDIT_TYPES = {
   CONTRACT_REQUEST_RECEIVED: "Запрос на договор",
@@ -347,7 +347,7 @@ const Profile = () => {
                   <h2 className="text-2xl font-semibold">{user.fullName}</h2>
                   <div className="flex gap-2 mt-1">
                     <Tag color={isOwner ? "blue" : "green"} className="mt-1">
-                      {isOwner ? "Владелец компании" : "Клиент"}
+                      {roles[user?.role]}
                     </Tag>
                     {user.ownedCompany && (
                       <Tag color="purple" icon={<ShopOutlined />}>

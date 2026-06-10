@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import {
   DashboardOutlined,
+  DollarCircleOutlined,
   FileTextOutlined,
   PlusCircleOutlined,
   TeamOutlined,
@@ -70,7 +71,7 @@ const SideMenu = ({ defaultSelectedKeys }) => {
         },
         {
           key: "5",
-          icon: <TeamOutlined />,
+          icon: <DollarCircleOutlined />,
           label: "Компании",
           onClick: () => navigate("/companies"),
         },

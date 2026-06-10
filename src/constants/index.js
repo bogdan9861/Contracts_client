@@ -8,3 +8,9 @@ export const contact_statuses = {
   APPROVED: "Подписан/Подтверждён",
   REJECTED: "Отклонён",
 };
+
+export const roles = {
+  ADMIN: "Администратор",
+  COMPANY_OWNER: "Владелец компании",
+  CLIENT: "Клиент",
+};

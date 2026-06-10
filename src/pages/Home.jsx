@@ -41,7 +41,7 @@ import {
 import SideMenu from "../components/SideMenu";
 import { useEffect, useState } from "react";
 import { getDashboard } from "../api/endpoints/dashboard";
-import { enums } from "../constants";
+import { enums, roles } from "../constants";
 import { Link, useNavigate } from "react-router";
 import { getCurrent } from "../api/endpoints/auth";
 
@@ -54,12 +54,6 @@ const COLORS = [
   "rgba(245, 158, 11, 0.8)", // pending - оранжевый (для клиента)
   "rgba(220, 38, 38, 0.8)", // rejected - темно-красный (для клиента)
 ];
-
-const roles = {
-  ADMIN: "Администратор",
-  COMPANY_OWNER: "Владелец компании",
-  CLIENT: "Клиент",
-};
 
 const Home = () => {
   const [dashboardData, setDashboardData] = useState({
