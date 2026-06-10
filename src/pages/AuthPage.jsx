@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Tabs, message } from "antd";
+import { Form, Input, Button, Tabs, message, Select, Divider } from "antd";
 import { motion } from "framer-motion";
 import { login, register } from "../api/endpoints/auth";
 import { enums } from "../constants";
@@ -10,7 +10,9 @@ const { TabPane } = Tabs;
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("login");
   const [form] = Form.useForm();
+  const [role, setRole] = useState("CLIENT");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const onLogin = (values) => {
@@ -32,13 +34,13 @@ export default function AuthPage() {
   const onRegister = (values) => {
     setLoading(true);
 
-    register(values)
+    register({ ...values, role })
       .then((res) => {
         localStorage.setItem(enums.TOKEN, res.data.token);
         navigate("/");
       })
       .catch((e) => {
-        message.error("Не удалось войти в аккаунт");
+        message.error(`Не удалось создать аккаунт ${e.message}`);
       })
       .finally(() => {
         setLoading(false);
@@ -105,18 +107,117 @@ export default function AuthPage() {
             </TabPane>
 
             <TabPane tab="Регистрация" key="register">
-              <Form layout="vertical" onFinish={onRegister}>
+              <Form
+                layout="vertical"
+                onFinish={onRegister}
+                style={{
+                  maxHeight: "25vw",
+                  overflowY: "auto",
+                  paddingRight: 15,
+                }}
+              >
                 <Form.Item
-                  label={
-                    <span className="text-gray-300">Название компании</span>
-                  }
-                  name="companyName"
+                  label={<span className="text-gray-300">Выберите роль</span>}
+                  name="role"
                   rules={[
                     { required: true, message: "Введите название компании" },
                   ]}
                 >
-                  <Input size="large" placeholder="Введите название компании" />
+                  <Select
+                    onChange={(value) => setRole(value)}
+                    options={[
+                      { label: "Владелец", value: "COMPANY_OWNER" },
+                      { label: "Клиент", value: "CLIENT" },
+                    ]}
+                  />
                 </Form.Item>
+
+                {role === "COMPANY_OWNER" && (
+                  <div>
+                    <Divider style={{ marginBottom: 10 }} />
+                    <p style={{ marginBottom: 20, textAlign: "center" }}>
+                      Данные компании
+                    </p>
+
+                    <Form.Item
+                      label={<span className="text-gray-300">Название</span>}
+                      name="companyName"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Обязательное поле",
+                        },
+                      ]}
+                    >
+                      <Input
+                        size="large"
+                        placeholder="Введите название компании"
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      label={<span className="text-gray-300">E-mail</span>}
+                      name="companyEmail"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Обязательное поле",
+                        },
+                      ]}
+                    >
+                      <Input
+                        size="large"
+                        placeholder="Введите E-mail компании"
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      label={
+                        <span className="text-gray-300">Номер телефона</span>
+                      }
+                      name="companyPhone"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Обязательное поле",
+                        },
+                      ]}
+                    >
+                      <Input size="large" placeholder="+7" />
+                    </Form.Item>
+
+                    <Form.Item
+                      label={<span className="text-gray-300">Адрес</span>}
+                      name="companyAddress"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Обязательное поле",
+                        },
+                      ]}
+                    >
+                      <Input
+                        size="large"
+                        placeholder="Введите адрес компании"
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      label={<span className="text-gray-300">ИНН</span>}
+                      name="companyInn"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Обязательное поле",
+                        },
+                      ]}
+                    >
+                      <Input size="large" placeholder="Введите ИНН компании" />
+                    </Form.Item>
+
+                    <Divider />
+                  </div>
+                )}
 
                 <Form.Item
                   label={<span className="text-gray-300">Имя</span>}

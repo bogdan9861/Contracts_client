@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Table, Card, Button, Tag, Space, Input, Select, message } from "antd";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import SideMenu from "../components/SideMenu";
-import { getContracts } from "../api/endpoints/contracts";
+import { getContracts, getMyContracts } from "../api/endpoints/contracts";
 import CreateContractModal from "../components/ui/CreateContractModal";
 import { getClients } from "../api/endpoints/clients";
+import { getCurrent } from "../api/endpoints/auth";
+import { contact_statuses } from "../constants";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -15,6 +17,19 @@ const Contracts = () => {
   const [contractsModalOpen, setContractsModalOpen] = useState(false);
   const [selectedContract, setSelectedContract] = useState(null);
   const [editContractModalOpen, setEditContractModalOpen] = useState(false);
+  const [createButtonHidden, setCreateButtonHidden] = useState(true);
+
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    getCurrent()
+      .then((res) => {
+        setCreateButtonHidden(res.data.role === "COMPANY_OWNER");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   const columns = [
     {
@@ -46,13 +61,17 @@ const Contracts = () => {
     },
     {
       title: "Статус",
-      dataIndex: "status",
+      dataIndex: "requestStatus",
       key: "status",
       render: (status) => {
         const color =
-          status === "ACTIVE" ? "green" : status === "EXPIRED" ? "yellow" : "red";
+          status === "ACTIVE"
+            ? "green"
+            : status === "EXPIRED"
+              ? "yellow"
+              : "red";
 
-        return <Tag color={color}>{status}</Tag>;
+        return <Tag color={color}>{contact_statuses[status]}</Tag>;
       },
     },
     {
@@ -87,7 +106,7 @@ const Contracts = () => {
 
   useEffect(() => {
     setLoading(true);
-    getContracts()
+    getMyContracts()
       .then((res) => {
         console.log("res.data", res.data);
 
@@ -103,7 +122,7 @@ const Contracts = () => {
 
   const handleSearch = (value) => {
     const filtered = contracts.filter((contract) =>
-      contract.number.toLowerCase().includes(value.toLowerCase())
+      contract.number.toLowerCase().includes(value.toLowerCase()),
     );
 
     setContracts(filtered);
@@ -126,14 +145,6 @@ const Contracts = () => {
                   Управление договорами предприятия
                 </p>
               </div>
-
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={() => setContractsModalOpen(true)}
-              >
-                Создать договор
-              </Button>
             </div>
 
             {/* Filters */}

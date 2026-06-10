@@ -4,13 +4,8 @@ export const login = async (data) => {
   return await api.post("/users/login", data);
 };
 
-export const register = async ({ companyName, fullName, email, password }) => {
-  return await api.post("/users/register", {
-    companyName,
-    fullName,
-    email,
-    password,
-  });
+export const register = async (data) => {
+  return await api.post("/users/register", data);
 };
 
 export const getCurrent = async () => {

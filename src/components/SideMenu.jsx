@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Menu } from "antd";
 import {
   DashboardOutlined,
@@ -8,11 +8,78 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { getCurrent } from "../api/endpoints/auth";
 
 const { Sider } = Layout;
 
 const SideMenu = ({ defaultSelectedKeys }) => {
   const navigate = useNavigate();
+
+  const [user, setUser] = useState({});
+
+  const defaultMenu = [
+    {
+      key: "1",
+      icon: <DashboardOutlined />,
+      label: "Главная",
+      onClick: () => navigate("/"),
+    },
+    {
+      key: "2",
+      icon: <UserOutlined />,
+      label: "Профиль",
+      onClick: () => navigate("/profile"),
+    },
+    {
+      key: "4",
+      icon: <FileTextOutlined />,
+      label: "Договоры",
+      onClick: () => navigate("/contracts"),
+    },
+  ];
+
+  const [menu, setMenu] = useState(defaultMenu);
+
+  useEffect(() => {
+    getCurrent()
+      .then((res) => {
+        localStorage.setItem("role", res.data.role);
+        setUser(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+
+    if (!role) return;
+
+    const isOwner = role === "COMPANY_OWNER";
+
+    if (isOwner) {
+      setMenu([
+        ...defaultMenu,
+        {
+          key: "3",
+          icon: <TeamOutlined />,
+          label: "Клиенты",
+          onClick: () => navigate("/clients"),
+        },
+      ]);
+    } else {
+      setMenu([
+        ...defaultMenu,
+        {
+          key: "5",
+          icon: <TeamOutlined />,
+          label: "Компании",
+          onClick: () => navigate("/companies"),
+        },
+      ]);
+    }
+  }, [user]);
 
   return (
     <Sider
@@ -23,7 +90,7 @@ const SideMenu = ({ defaultSelectedKeys }) => {
       }}
     >
       <div className="h-20 flex items-center justify-center text-white text-xl font-semibold border-b border-white/10">
-        CRM System
+        CRM Система
       </div>
 
       <Menu
@@ -32,32 +99,7 @@ const SideMenu = ({ defaultSelectedKeys }) => {
         theme="dark"
         className=" border-none mt-4"
         style={{ backgroundColor: "#000" }}
-        items={[
-          {
-            key: "1",
-            icon: <DashboardOutlined />,
-            label: "Главная",
-            onClick: () => navigate("/"),
-          },
-          {
-            key: "2",
-            icon: <UserOutlined />,
-            label: "Профиль",
-            onClick: () => navigate("/profile"),
-          },
-          {
-            key: "3",
-            icon: <TeamOutlined />,
-            label: "Клиенты",
-            onClick: () => navigate("/clients"),
-          },
-          {
-            key: "4",
-            icon: <FileTextOutlined />,
-            label: "Договоры",
-            onClick: () => navigate("/contracts"),
-          },
-        ]}
+        items={menu}
       />
     </Sider>
   );

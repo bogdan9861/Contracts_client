@@ -19,7 +19,9 @@ const CreateContractModal = ({ data, open, onClose, setContracts }) => {
   useEffect(() => {
     getClients()
       .then((res) => setClients(res.data))
-      .catch(() => message.error("Не удалось получить клиентов"));
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
 
   useEffect(() => {
