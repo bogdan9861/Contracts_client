@@ -8,6 +8,8 @@ import Notifications from "./pages/Notifications";
 import Companies from "./pages/Companies";
 import { enums } from "./constants";
 import { useEffect } from "react";
+import Admin from "./pages/Admin/Admin";
+import AdminAuthPage from "./pages/Admin/AdminAuthPage";
 
 function App() {
   useEffect(() => {
@@ -30,6 +32,8 @@ function App() {
         <Route path="/contracts" element={<Contracts />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/companies" element={<Companies />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin-login" element={<AdminAuthPage />} />
       </Routes>
     </Router>
   );

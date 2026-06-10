@@ -15,3 +15,11 @@ export const getCurrent = async () => {
 export const editUser = async ({ companyName, fullName, email }) => {
   return await api.put("/users/", { companyName, fullName, email });
 };
+
+export const getAllUsers = async () => {
+  return await api.get(`/users/all`);
+};
+
+export const removeUser = async (id) => {
+  return await api.delete(`/users/${id}`);
+};

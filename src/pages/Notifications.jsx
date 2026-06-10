@@ -94,7 +94,7 @@ const Notifications = () => {
       console.error(error);
     } finally {
       setLoading(false);
-    }
+    } 
   };
 
   const handleMarkAsRead = async (notificationId) => {
